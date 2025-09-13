@@ -303,7 +303,8 @@
 
   // Keep duplicated views (categoría/lista) in sync
   function syncCardViews(cardId, sourceEl) {
-    const peers = qsa('.card').filter(el => el.dataset && el.dataset.cardId === String(cardId));
+    const allCards = qsa('.card');
+    const peers = allCards.filter(el => el.dataset && el.dataset.cardId === String(cardId));
     const srcAmount = qs('.amount-input', sourceEl)?.value ?? '';
     const srcPaid = qs('.paid-checkbox', sourceEl)?.checked ?? false;
     for (const el of peers) {
@@ -333,7 +334,4 @@
   retryAutoLoadBtn.addEventListener('click', attemptAutoLoad);
   // Try once on load
   attemptAutoLoad();
-
-})();
-
-
+})()

@@ -15,6 +15,7 @@
   const searchInput = qs('#searchInput');
   const autoLoadMsg = qs('#autoLoadMsg');
   const retryAutoLoadBtn = qs('#retryAutoLoad');
+  const exportBtn = qs('#exportBtn');
 
   const columnTpl = qs('#columnTemplate');
   const cardTpl = qs('#cardTemplate');
@@ -300,6 +301,65 @@
     }
   };
   searchInput.addEventListener('input', (e) => applySearchFilter(e.target.value));
+
+  // Export to CSV
+  exportBtn.addEventListener('click', () => {
+    if (!currentBoard) { alert('Primero carga el JSON.'); return; }
+    try { exportCSV(); } catch (e) { alert('No se pudo exportar el CSV.'); }
+  });
+
+  function exportCSV() {
+    const lists = (currentBoard.lists || []);
+    const listById = {};
+    for (const l of lists) listById[l.id] = l;
+    const cards = (currentBoard.cards || []).filter(c => !c.closed).sort((a,b) => (a.pos??0)-(b.pos??0));
+    const delim = ';';
+    const headers = ['Juicio', 'Importe a Percibir', 'Cobrado', 'Lista', 'Categoría'];
+    const rows = [headers];
+    const categoryOf = (card, st) => {
+      if (st?.paid) return 'COBRADO';
+      const name = (card.name || '').toLowerCase();
+      if (name.includes('laboral')) return 'LABORAL';
+      if (name.includes('civil') || name.includes('contencioso')) return 'CIVIL / CONTENCIOSO ADM.';
+      return 'OTROS';
+    };
+    const normalizeAmountCsv = (amt) => {
+      const n = parseAmount(amt);
+      // Spanish Excel usually expects comma as decimal with ; delimiter
+      return n.toFixed(2).replace('.', ',');
+    };
+    const esc = (v) => {
+      if (v == null) return '';
+      const s = String(v).replace(/"/g, '""');
+      return (s.includes('"') || s.includes('\n') || s.includes('\r') || s.includes(delim)) ? `"${s}"` : s;
+    };
+    for (const c of cards) {
+      const st = state.cards[c.id] || {};
+      const line = [
+        c.name || '',
+        normalizeAmountCsv(st.amount || 0),
+        st.paid ? 'SI' : 'NO',
+        listById[c.idList]?.name || '',
+        categoryOf(c, st)
+      ];
+      rows.push(line.map(esc));
+    }
+    const csv = rows.map(r => r.join(delim)).join('\n');
+    const bom = '\ufeff';
+    const blob = new Blob([bom, csv], { type: 'text/csv;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    const boardName = (currentBoard.name || 'tablero').replace(/[^\p{L}\p{N} _.-]/gu, '').trim() || 'tablero';
+    const ts = new Date();
+    const pad = (x) => String(x).padStart(2, '0');
+    const stamp = `${ts.getFullYear()}${pad(ts.getMonth()+1)}${pad(ts.getDate())}-${pad(ts.getHours())}${pad(ts.getMinutes())}`;
+    a.href = url;
+    a.download = `export-${boardName}-${stamp}.csv`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+  }
 
   // Keep duplicated views (categoría/lista) in sync
   function syncCardViews(cardId, sourceEl) {

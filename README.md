@@ -13,6 +13,7 @@ Uso:
    - Completa "Importe a Percibir".
    - Marca "Cobrado" si corresponde.
 5. El monto total cobrado aparece arriba a la derecha y se actualiza al marcar/desmarcar.
+6. Botón "Exportar": descarga un CSV con columnas Juicio; Importe a Percibir; Cobrado; Lista; Categoría.
 
 Detalles:
 - Se usa `card.name` como título de la tarjeta; se ignoran listas o tarjetas con `closed: true`.
@@ -29,6 +30,7 @@ Notas:
 - La auto-carga del JSON puede requerir servir los archivos con un servidor local (por ejemplo, VSCode Live Server). En algunos navegadores, abrir `index.html` con `file://` impide `fetch` del archivo local.
 - Para borrar datos guardados, limpia el `localStorage` del sitio desde el navegador.
 - Formato de moneda: el total se formatea como ARS; el input acepta `.` o `,` como separador decimal.
+ - Exportación: usa separador `;` para compatibilidad con Excel en español; el importe se exporta con coma decimal.
 
 Opcional (no implementado aún):
 - Exportar/Importar estados a un archivo JSON externo.

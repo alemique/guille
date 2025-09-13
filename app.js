@@ -253,9 +253,9 @@
       categoryBoardEl.appendChild(col);
     };
 
-    addColumn('COBRADO', paidCol);
     addColumn('LABORAL', laborals);
     addColumn('CIVIL / CONTENCIOSO ADM.', civils);
+    addColumn('COBRADO', paidCol);
   };
 
   const readFile = (file) => new Promise((resolve, reject) => {

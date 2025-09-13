@@ -8,7 +8,7 @@ Archivos:
 Uso:
 1. Abre `index.html` en tu navegador (doble clic).
 2. Auto-carga: la página intenta cargar automáticamente `Q7vCIwzd - guille.json` desde la misma carpeta. Si el navegador bloquea el acceso a archivos locales, usa el botón "Cargar JSON" o arrastra el archivo al recuadro.
-3. Se renderiza el tablero con columnas de Categorías (COBRADO, LABORAL, CIVIL/CONTENCIOSO ADM.) y debajo las columnas originales por lista.
+3. Se renderiza el tablero con columnas de Categorías (LABORAL, CIVIL/CONTENCIOSO ADM., COBRADO) y debajo las columnas originales por lista.
 4. En cada tarjeta:
    - Completa "Importe a Percibir".
    - Marca "Cobrado" si corresponde.
@@ -20,9 +20,9 @@ Detalles:
 - Búsqueda: filtra tarjetas por texto del nombre.
 - Si el JSON incluye un Custom Field llamado "Importe a Percibir", se precompleta el importe cuando sea posible.
 - Categorías: 
-  - COBRADO: cualquier tarjeta marcada como cobrada.
   - LABORAL: tarjetas cuyo nombre contiene "laboral" (y no cobradas).
   - CIVIL/CONTENCIOSO ADM.: tarjetas cuyo nombre contiene "civil" o "contencioso" (y no cobradas).
+  - COBRADO: cualquier tarjeta marcada como cobrada.
 
 Notas:
 - No se necesita servidor para la carga manual (arrastrar/seleccionar) gracias a `FileReader`.

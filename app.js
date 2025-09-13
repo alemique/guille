@@ -312,6 +312,22 @@
     }
   }
 
+  // Keep duplicated views (categoría/lista) in sync
+  function syncCardViews(cardId, sourceEl) {
+    const allCards = qsa('.card');
+    const peers = allCards.filter(el => el.dataset && el.dataset.cardId === String(cardId));
+    const srcAmount = qs('.amount-input', sourceEl)?.value ?? '';
+    const srcPaid = qs('.paid-checkbox', sourceEl)?.checked ?? false;
+    for (const el of peers) {
+      if (el === sourceEl) continue;
+      const amt = qs('.amount-input', el);
+      const chk = qs('.paid-checkbox', el);
+      if (amt) amt.value = srcAmount;
+      if (chk) chk.checked = srcPaid;
+      if (srcPaid) el.style.outline = '1px solid rgba(52,211,153,0.45)'; else el.style.outline = '';
+    }
+  }
+
   // Attempt auto-load of default JSON from same folder
   const DEFAULT_JSON = 'Q7vCIwzd - guille.json';
   async function attemptAutoLoad() {

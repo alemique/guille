@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Tablero Trello – Visualización</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="app-header">
+      <div class="brand">
+        <div class="logo">⚖️</div>
+        <div class="titles">
+          <h1>Tablero de Juicios</h1>
+          <p class="subtitle">Visualización desde exportación de Trello</p>
+        </div>
+      </div>
+      <div class="header-actions">
+        <label class="file-btn">
+          <input id="fileInput" type="file" accept="application/json,.json" />
+          Cargar JSON
+        </label>
+        <div class="search-wrap">
+          <input id="searchInput" type="search" placeholder="Buscar por nombre…" />
+        </div>
+        <div class="totals">
+          <div class="total-box">
+            <span class="label">Total Cobrado</span>
+            <span id="paidTotal" class="value">$ 0,00</span>
+          </div>
+        </div>
+        <label class="toggle-original">
+          <input id="toggleOriginal" type="checkbox" />
+          <span>Ver listas originales</span>
+        </label>
+      </div>
+    </header>
+
+    <main>
+      <section id="dropZone" class="drop-zone" aria-label="Soltar archivo JSON aquí">
+        <div class="dz-inner">
+          <div class="dz-icon">📁</div>
+          <div>
+            <h2>Arrastra y suelta tu archivo JSON</h2>
+            <p>o usa el botón “Cargar JSON” arriba</p>
+            <p class="hint">Ruta sugerida: Q7vCIwzd - guille.json</p>
+            <div id="autoLoadMsg" class="hint"></div>
+            <div style="margin-top:10px">
+              <button id="retryAutoLoad" class="btn">Reintentar auto-carga</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="categoryHeader" class="board-header hidden">
+        <h2 class="section-title">Categorías</h2>
+        <div class="board-meta">
+          <span class="muted">COBRADO · LABORAL · CIVIL / CONTENCIOSO ADM.</span>
+        </div>
+      </section>
+      <section id="categoryBoard" class="board board--categories hidden" aria-live="polite"></section>
+
+      <section id="boardHeader" class="board-header hidden">
+        <h2 id="boardName">Tablero</h2>
+        <div class="board-meta">
+          <span id="listsCount">0 listas</span>
+          <span id="cardsCount">0 tarjetas</span>
+        </div>
+      </section>
+
+      <section id="board" class="board hidden" aria-live="polite"></section>
+    </main>
+
+    <template id="columnTemplate">
+      <div class="column">
+        <div class="column-header">
+          <h3 class="column-title"></h3>
+        </div>
+        <div class="cards"></div>
+      </div>
+    </template>
+
+    <template id="cardTemplate">
+      <article class="card">
+        <h4 class="card-title"></h4>
+        <div class="card-controls">
+          <label class="amount-field">
+            <span>Importe a Percibir</span>
+            <div class="amount-input-wrap">
+              <span class="currency">$</span>
+              <input type="number" step="0.01" inputmode="decimal" class="amount-input" placeholder="0,00" />
+            </div>
+          </label>
+          <label class="paid-field">
+            <input type="checkbox" class="paid-checkbox" />
+            <span>Cobrado</span>
+          </label>
+        </div>
+      </article>
+    </template>
+
+    <script src="app.js"></script>
+  </body>
+  </html>
